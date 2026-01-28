@@ -12,45 +12,47 @@ html.emoji-blocker-hold {
 /* Base styles for processed emoji spans */
 .emoji-blocker-emoji {
   display: inline-block;
-  transition: filter 0.3s ease, opacity 0.3s ease;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
   cursor: default;
   white-space: pre;
 }
 
 /* Hide mode - completely hides emojis */
-.emoji-blocker-emoji[data-mode="hide"] {
+.emoji-blocker-emoji[data-mode='hide'] {
   display: none !important;
 }
 
 /* Desaturate mode - hover to reveal */
-.emoji-blocker-emoji[data-mode="desaturate"] {
+.emoji-blocker-emoji[data-mode='desaturate'] {
   /* values are set inline via JS */
 }
 
 /* Hover to reveal original emoji colors */
-.emoji-blocker-emoji[data-mode="desaturate"]:hover {
+.emoji-blocker-emoji[data-mode='desaturate']:hover {
   filter: none !important;
   opacity: 1 !important;
 }
 
 /* Dim mode - hover to reveal */
-.emoji-blocker-emoji[data-mode="dim"] {
+.emoji-blocker-emoji[data-mode='dim'] {
   /* values are set inline via JS */
 }
 
 /* Hover to reveal for dim mode */
-.emoji-blocker-emoji[data-mode="dim"]:hover {
+.emoji-blocker-emoji[data-mode='dim']:hover {
   filter: none !important;
   opacity: 1 !important;
 }
 
 /* Blur mode - hover to reveal */
-.emoji-blocker-emoji[data-mode="blur"] {
+.emoji-blocker-emoji[data-mode='blur'] {
   /* values are set inline via JS */
 }
 
 /* Hover to reveal for blur mode */
-.emoji-blocker-emoji[data-mode="blur"]:hover {
+.emoji-blocker-emoji[data-mode='blur']:hover {
   filter: none !important;
   opacity: 1 !important;
 }

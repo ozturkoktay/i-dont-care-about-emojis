@@ -8,24 +8,23 @@
  * Emoji detection utilities
  */
 const EmojiDetection = {
-
   EMOJI_RANGES: [
-    [0x1F600, 0x1F64F], // Emoticons
-    [0x1F300, 0x1F5FF], // Misc Symbols and Pictographs
-    [0x1F680, 0x1F6FF], // Transport and Map
-    [0x1F700, 0x1F77F], // Alchemical Symbols
-    [0x1F780, 0x1F7FF], // Geometric Shapes Extended
-    [0x1F800, 0x1F8FF], // Supplemental Arrows-C
-    [0x1F900, 0x1F9FF], // Supplemental Symbols and Pictographs
-    [0x1FA00, 0x1FA6F], // Chess Symbols
-    [0x1FA70, 0x1FAFF], // Symbols and Pictographs Extended-A
-    [0x2600, 0x26FF],   // Misc symbols
-    [0x2700, 0x27BF],   // Dingbats
-    [0xFE00, 0xFE0F],   // Variation Selectors
-    [0x1F1E6, 0x1F1FF], // Regional Indicator Symbols (flags)
-    [0x1F191, 0x1F251], // Enclosed characters
-    [0x1F004, 0x1F0CF], // Mahjong and playing card symbols
-    [0x1F170, 0x1F189]  // Enclosed Alphanumeric Supplement
+    [0x1f600, 0x1f64f], // Emoticons
+    [0x1f300, 0x1f5ff], // Misc Symbols and Pictographs
+    [0x1f680, 0x1f6ff], // Transport and Map
+    [0x1f700, 0x1f77f], // Alchemical Symbols
+    [0x1f780, 0x1f7ff], // Geometric Shapes Extended
+    [0x1f800, 0x1f8ff], // Supplemental Arrows-C
+    [0x1f900, 0x1f9ff], // Supplemental Symbols and Pictographs
+    [0x1fa00, 0x1fa6f], // Chess Symbols
+    [0x1fa70, 0x1faff], // Symbols and Pictographs Extended-A
+    [0x2600, 0x26ff], // Misc symbols
+    [0x2700, 0x27bf], // Dingbats
+    [0xfe00, 0xfe0f], // Variation Selectors
+    [0x1f1e6, 0x1f1ff], // Regional Indicator Symbols (flags)
+    [0x1f191, 0x1f251], // Enclosed characters
+    [0x1f004, 0x1f0cf], // Mahjong and playing card symbols
+    [0x1f170, 0x1f189] // Enclosed Alphanumeric Supplement
   ],
 
   /**
@@ -35,9 +34,7 @@ const EmojiDetection = {
    */
   isEmoji(char) {
     const codePoint = char.codePointAt(0);
-    return this.EMOJI_RANGES.some(
-      ([start, end]) => codePoint >= start && codePoint <= end
-    );
+    return this.EMOJI_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
   },
 
   /**
@@ -60,7 +57,7 @@ const EmojiDetection = {
    */
   extractEmojis(text) {
     if (!text) return [];
-    return [...text].filter(char => this.isEmoji(char));
+    return [...text].filter((char) => this.isEmoji(char));
   }
 };
 
@@ -73,18 +70,35 @@ const ProcessorConfig = {
   MAX_TEXT_LENGTH: 10000,
 
   MODE_STYLES: {
-    'hide': { display: 'none' },
-    'desaturate': { filter: 'grayscale(100%) contrast(0.8) brightness(1.1)', opacity: '0.5' },
-    'dim': { filter: 'grayscale(60%) brightness(1.1)', opacity: '0.35' },
-    'blur': { filter: 'blur(3px) grayscale(50%)', opacity: '0.7' }
+    hide: { display: 'none' },
+    desaturate: { filter: 'grayscale(100%) contrast(0.8) brightness(1.1)', opacity: '0.5' },
+    dim: { filter: 'grayscale(60%) brightness(1.1)', opacity: '0.35' },
+    blur: { filter: 'blur(3px) grayscale(50%)', opacity: '0.7' }
   },
 
   SKIP_TAGS: new Set([
-    'IMG', 'SVG', 'CANVAS', 'VIDEO', 'AUDIO', 'IFRAME',
-    'SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE',
-    'INPUT', 'TEXTAREA', 'SELECT', 'OPTION',
-    'CODE', 'PRE', 'KBD', 'SAMP',
-    'HEAD', 'META', 'LINK', 'TITLE'
+    'IMG',
+    'SVG',
+    'CANVAS',
+    'VIDEO',
+    'AUDIO',
+    'IFRAME',
+    'SCRIPT',
+    'STYLE',
+    'NOSCRIPT',
+    'TEMPLATE',
+    'INPUT',
+    'TEXTAREA',
+    'SELECT',
+    'OPTION',
+    'CODE',
+    'PRE',
+    'KBD',
+    'SAMP',
+    'HEAD',
+    'META',
+    'LINK',
+    'TITLE'
   ]),
 
   SKIP_ROLES: new Set(['textbox', 'searchbox', 'combobox'])
@@ -139,7 +153,7 @@ class EmojiBlockerCore {
    * @param {string} mode - New mode to apply
    */
   updateMode(mode) {
-    document.querySelectorAll(`.${ProcessorConfig.EMOJI_CLASS}`).forEach(el => {
+    document.querySelectorAll(`.${ProcessorConfig.EMOJI_CLASS}`).forEach((el) => {
       el.setAttribute('data-mode', mode);
       this._applyModeStyles(el, mode);
     });
@@ -149,17 +163,17 @@ class EmojiBlockerCore {
    * Remove all emoji processing from page
    */
   revertProcessing() {
-    document.querySelectorAll(`.${ProcessorConfig.EMOJI_CLASS}`).forEach(el => {
+    document.querySelectorAll(`.${ProcessorConfig.EMOJI_CLASS}`).forEach((el) => {
       try {
         const textNode = document.createTextNode(el.textContent);
         el.parentNode?.replaceChild(textNode, el);
-      } catch { /* Element may have been removed */ }
+      } catch {
+        /* Element may have been removed */
+      }
     });
     this.processedNodes = new WeakSet();
     this.processingQueue = [];
   }
-
-
 
   _scheduleProcessing() {
     if (this.isProcessing) return;
@@ -214,18 +228,14 @@ class EmojiBlockerCore {
   }
 
   _processElementNode(element, mode) {
-    const walker = document.createTreeWalker(
-      element,
-      NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: (textNode) => {
-          if (this.processedNodes.has(textNode)) return NodeFilter.FILTER_REJECT;
-          const parent = textNode.parentNode;
-          if (parent && this._shouldSkipElement(parent)) return NodeFilter.FILTER_REJECT;
-          return NodeFilter.FILTER_ACCEPT;
-        }
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, {
+      acceptNode: (textNode) => {
+        if (this.processedNodes.has(textNode)) return NodeFilter.FILTER_REJECT;
+        const parent = textNode.parentNode;
+        if (parent && this._shouldSkipElement(parent)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
       }
-    );
+    });
 
     const textNodes = [];
     let current;
@@ -332,8 +342,6 @@ class EmojiBlockerCore {
     if (styles.filter) element.style.filter = styles.filter;
     if (styles.opacity) element.style.opacity = styles.opacity;
   }
-
-
 
   static isEmoji(char) {
     return EmojiDetection.isEmoji(char);

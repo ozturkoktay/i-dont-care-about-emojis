@@ -19,8 +19,6 @@ class StorageManager {
     this.storage = storage;
   }
 
-
-
   /**
    * Get the current whitelist
    * @returns {Promise<string[]>}
@@ -107,8 +105,6 @@ class StorageManager {
     }
   }
 
-
-
   /**
    * Get current settings
    * @returns {Promise<{mode: string, enabled: boolean}>}
@@ -140,8 +136,6 @@ class StorageManager {
     }
   }
 
-
-
   /**
    * Normalize domain for consistent storage
    * @param {string} domain - Domain to normalize
@@ -169,7 +163,6 @@ class StorageManager {
     }
   }
 }
-
 
 const WhitelistManager = StorageManager;
 

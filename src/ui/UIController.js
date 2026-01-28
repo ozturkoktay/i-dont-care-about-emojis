@@ -15,7 +15,7 @@ const UIUtils = {
    */
   escapeHtml(text) {
     const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    return text.replace(/[&<>"']/g, (m) => map[m]);
   },
 
   /**
@@ -25,7 +25,7 @@ const UIUtils = {
   async reloadTabsForDomain(domain) {
     try {
       const tabs = await chrome.tabs.query({});
-      tabs.forEach(tab => {
+      tabs.forEach((tab) => {
         if (tab.url?.includes(domain)) {
           chrome.tabs.reload(tab.id).catch(() => {});
         }
@@ -43,7 +43,7 @@ const UIUtils = {
   async broadcastToTabs(action, data = {}) {
     try {
       const tabs = await chrome.tabs.query({});
-      tabs.forEach(tab => {
+      tabs.forEach((tab) => {
         chrome.tabs.sendMessage(tab.id, { action, ...data }).catch(() => {});
       });
     } catch (error) {
@@ -57,7 +57,6 @@ const UIUtils = {
  */
 class BaseUIController {
   constructor() {
-
     this.storageManager = null;
   }
 
@@ -67,7 +66,6 @@ class BaseUIController {
    */
   getStorage() {
     if (!this.storageManager) {
-
       this.storageManager = new StorageManager();
     }
     return this.storageManager;
@@ -128,16 +126,20 @@ class BaseUIController {
       return;
     }
 
-    container.innerHTML = whitelist.map(domain => `
+    container.innerHTML = whitelist
+      .map(
+        (domain) => `
       <div class="whitelist-item">
         <span class="whitelist-domain">${UIUtils.escapeHtml(domain)}</span>
         <button class="btn btn-danger btn-remove" data-domain="${UIUtils.escapeHtml(domain)}">
           Remove
         </button>
       </div>
-    `).join('');
+    `
+      )
+      .join('');
 
-    container.querySelectorAll('.btn-remove').forEach(btn => {
+    container.querySelectorAll('.btn-remove').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const domain = e.target.getAttribute('data-domain');
         onRemove(domain);
@@ -197,10 +199,8 @@ class PopupController extends BaseUIController {
   async loadWhitelist() {
     try {
       const whitelist = await this.getStorage().getWhitelist();
-      this.renderWhitelist(
-        this.elements.whitelistContainer,
-        whitelist,
-        (domain) => this.removeFromWhitelist(domain)
+      this.renderWhitelist(this.elements.whitelistContainer, whitelist, (domain) =>
+        this.removeFromWhitelist(domain)
       );
     } catch (error) {
       console.error('Error loading whitelist:', error);
@@ -221,8 +221,12 @@ class PopupController extends BaseUIController {
   }
 
   attachEventListeners() {
-    this.elements.toggleWhitelist.addEventListener('click', () => this.toggleCurrentDomainWhitelist());
-    this.elements.modeSelect.addEventListener('change', () => this.updateMode(this.elements.modeSelect.value));
+    this.elements.toggleWhitelist.addEventListener('click', () =>
+      this.toggleCurrentDomainWhitelist()
+    );
+    this.elements.modeSelect.addEventListener('change', () =>
+      this.updateMode(this.elements.modeSelect.value)
+    );
     this.elements.enabledCheckbox.addEventListener('change', () => {
       this.toggleEnabled(this.elements.enabledCheckbox.checked);
       this.updateEnabledLabel();
@@ -232,7 +236,9 @@ class PopupController extends BaseUIController {
 
   updateEnabledLabel() {
     if (!this.elements.enabledLabel) return;
-    this.elements.enabledLabel.textContent = this.elements.enabledCheckbox.checked ? 'Enable' : 'Disable';
+    this.elements.enabledLabel.textContent = this.elements.enabledCheckbox.checked
+      ? 'Enable'
+      : 'Disable';
   }
 
   async toggleCurrentDomainWhitelist() {
@@ -380,7 +386,9 @@ class OptionsController extends BaseUIController {
       if (!container) continue;
 
       const sites = this.suggestedSites[category];
-      container.innerHTML = sites.map(site => `
+      container.innerHTML = sites
+        .map(
+          (site) => `
         <button 
           class="suggested-site-btn" 
           data-domain="${UIUtils.escapeHtml(site.domain)}"
@@ -389,9 +397,11 @@ class OptionsController extends BaseUIController {
           <span class="site-name">${UIUtils.escapeHtml(site.name)}</span>
           <span class="site-status">+</span>
         </button>
-      `).join('');
+      `
+        )
+        .join('');
 
-      container.querySelectorAll('.suggested-site-btn').forEach(btn => {
+      container.querySelectorAll('.suggested-site-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
           this.toggleSuggestedSite(btn.getAttribute('data-domain'), btn);
         });
@@ -400,10 +410,10 @@ class OptionsController extends BaseUIController {
   }
 
   updateSuggestedSitesState() {
-    document.querySelectorAll('.suggested-site-btn').forEach(btn => {
+    document.querySelectorAll('.suggested-site-btn').forEach((btn) => {
       const domain = btn.getAttribute('data-domain');
-      const isWhitelisted = this.currentWhitelist.some(d =>
-        d === domain || domain.includes(d) || d.includes(domain)
+      const isWhitelisted = this.currentWhitelist.some(
+        (d) => d === domain || domain.includes(d) || d.includes(domain)
       );
 
       btn.classList.toggle('added', isWhitelisted);
@@ -502,7 +512,7 @@ class OptionsController extends BaseUIController {
       this.showToast('Whitelist cleared', 'success');
 
       const tabs = await chrome.tabs.query({});
-      tabs.forEach(tab => chrome.tabs.reload(tab.id).catch(() => {}));
+      tabs.forEach((tab) => chrome.tabs.reload(tab.id).catch(() => {}));
     } catch (error) {
       console.error('Error clearing whitelist:', error);
       this.showToast('Error clearing whitelist', 'error');
