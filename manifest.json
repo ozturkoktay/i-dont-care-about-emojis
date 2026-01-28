@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "I don't care about emojis",
   "version": "1.0.0",
-  "description": "Block or desaturate emojis on web pages with whitelist support",
+  "description": "Hide, grayscale, dim, or blur emojis across the web with a simple whitelist and per‑site control.",
   "permissions": [
     "storage",
     "activeTab",
