@@ -52,7 +52,7 @@ function copyFile(src, dest) {
 }
 
 function build() {
-  console.log('Building Emoji Blocker Extension...');
+  console.log('Building I don\'t care about emojis Extension...');
 
   setupBuildDir();
 

@@ -167,47 +167,47 @@ class BackgroundService {
       await this.storage.updateSettings({ mode: 'desaturate', enabled: true });
     }
     await this.setActionIcon(settings.enabled);
-    console.log('Emoji Blocker: Extension installed');
+    console.log("I don't care about emojis: Extension installed");
   }
 
   async handleMessage(message, _sender, sendResponse) {
     try {
       switch (message.action) {
-        case 'getWhitelist': {
-          const whitelist = await this.storage.getWhitelist();
-          sendResponse({ success: true, data: whitelist });
-          break;
+      case 'getWhitelist': {
+        const whitelist = await this.storage.getWhitelist();
+        sendResponse({ success: true, data: whitelist });
+        break;
+      }
+      case 'addToWhitelist':
+        await this.storage.addToWhitelist(message.domain);
+        sendResponse({ success: true });
+        this.notifyContentScripts(message.domain, 'reloadPage');
+        break;
+      case 'removeFromWhitelist':
+        await this.storage.removeFromWhitelist(message.domain);
+        sendResponse({ success: true });
+        this.notifyContentScripts(message.domain, 'reloadPage');
+        break;
+      case 'isWhitelisted': {
+        const isWhitelisted = await this.storage.isWhitelisted(message.domain);
+        sendResponse({ success: true, data: isWhitelisted });
+        break;
+      }
+      case 'getSettings': {
+        const settings = await this.storage.getSettings();
+        sendResponse({ success: true, data: settings });
+        break;
+      }
+      case 'updateSettings':
+        await this.storage.updateSettings(message.settings);
+        sendResponse({ success: true });
+        this.broadcastToAllTabs('updateMode', { mode: message.settings.mode });
+        if (typeof message.settings.enabled === 'boolean') {
+          await this.setActionIcon(message.settings.enabled);
         }
-        case 'addToWhitelist':
-          await this.storage.addToWhitelist(message.domain);
-          sendResponse({ success: true });
-          this.notifyContentScripts(message.domain, 'reloadPage');
-          break;
-        case 'removeFromWhitelist':
-          await this.storage.removeFromWhitelist(message.domain);
-          sendResponse({ success: true });
-          this.notifyContentScripts(message.domain, 'reloadPage');
-          break;
-        case 'isWhitelisted': {
-          const isWhitelisted = await this.storage.isWhitelisted(message.domain);
-          sendResponse({ success: true, data: isWhitelisted });
-          break;
-        }
-        case 'getSettings': {
-          const settings = await this.storage.getSettings();
-          sendResponse({ success: true, data: settings });
-          break;
-        }
-        case 'updateSettings':
-          await this.storage.updateSettings(message.settings);
-          sendResponse({ success: true });
-          this.broadcastToAllTabs('updateMode', { mode: message.settings.mode });
-          if (typeof message.settings.enabled === 'boolean') {
-            await this.setActionIcon(message.settings.enabled);
-          }
-          break;
-        default:
-          sendResponse({ success: false, error: 'Unknown action' });
+        break;
+      default:
+        sendResponse({ success: false, error: 'Unknown action' });
       }
     } catch (error) {
       console.error('Background service error:', error);

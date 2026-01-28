@@ -223,7 +223,7 @@ class EmojiBlockerCore {
       }
       this.processedNodes.add(node);
     } catch (error) {
-      console.debug('Emoji Blocker: Error processing node', error);
+      console.debug("I don't care about emojis: Error processing node", error);
     }
   }
 
@@ -275,7 +275,7 @@ class EmojiBlockerCore {
         parent.replaceChild(fragment, textNode);
       }
     } catch (error) {
-      console.debug('Emoji Blocker: Error processing text node', error);
+      console.debug("I don't care about emojis: Error processing text node", error);
     }
 
     this.processedNodes.add(textNode);

@@ -26,7 +26,7 @@
     "blocker",
     "productivity"
   ],
-  "author": "Emoji Blocker Team",
+  "author": "Oktay Ozturk",
   "license": "MIT",
   "devDependencies": {
     "@types/chrome": "^0.0.268",

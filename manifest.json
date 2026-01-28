@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Emoji Blocker",
+  "name": "I don't care about emojis",
   "version": "1.0.0",
   "description": "Block or desaturate emojis on web pages with whitelist support",
   "permissions": [

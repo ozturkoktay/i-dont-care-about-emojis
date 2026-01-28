@@ -36,7 +36,7 @@ class EmojiBlockerContent {
       const isWhitelisted = await this.storage.isWhitelisted(currentDomain);
 
       if (isWhitelisted) {
-        console.log('Emoji Blocker: Domain is whitelisted');
+        console.log("I don't care about emojis: Domain is whitelisted");
         this.releaseHold();
         return;
       }
@@ -57,9 +57,9 @@ class EmojiBlockerContent {
       }
 
       this.setupMessageListener();
-      console.log('Emoji Blocker: Active on this page');
+      console.log("I don't care about emojis: Active on this page");
     } catch (error) {
-      console.error('Emoji Blocker: Initialization error', error);
+      console.error("I don't care about emojis: Initialization error", error);
     }
   }
 
@@ -193,20 +193,20 @@ class EmojiBlockerContent {
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       switch (message.action) {
-        case 'toggleEnabled':
-          this.toggleEnabled(message.enabled);
-          sendResponse({ success: true });
-          break;
-        case 'updateMode':
-          this.updateMode(message.mode);
-          sendResponse({ success: true });
-          break;
-        case 'reloadPage':
-          window.location.reload();
-          sendResponse({ success: true });
-          break;
-        default:
-          sendResponse({ success: false, error: 'Unknown action' });
+      case 'toggleEnabled':
+        this.toggleEnabled(message.enabled);
+        sendResponse({ success: true });
+        break;
+      case 'updateMode':
+        this.updateMode(message.mode);
+        sendResponse({ success: true });
+        break;
+      case 'reloadPage':
+        window.location.reload();
+        sendResponse({ success: true });
+        break;
+      default:
+        sendResponse({ success: false, error: 'Unknown action' });
       }
       return true;
     });

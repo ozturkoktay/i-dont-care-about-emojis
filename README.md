@@ -1,4 +1,4 @@
-# 🚫 Emoji Blocker
+# 🚫 I don't care about emojis
 
 A minimal, fast browser extension for Chrome and Firefox that hides, grayscale, dim, or blur emojis without touching images.
 
