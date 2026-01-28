@@ -193,20 +193,20 @@ class EmojiBlockerContent {
   setupMessageListener() {
     chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       switch (message.action) {
-      case 'toggleEnabled':
-        this.toggleEnabled(message.enabled);
-        sendResponse({ success: true });
-        break;
-      case 'updateMode':
-        this.updateMode(message.mode);
-        sendResponse({ success: true });
-        break;
-      case 'reloadPage':
-        window.location.reload();
-        sendResponse({ success: true });
-        break;
-      default:
-        sendResponse({ success: false, error: 'Unknown action' });
+        case 'toggleEnabled':
+          this.toggleEnabled(message.enabled);
+          sendResponse({ success: true });
+          break;
+        case 'updateMode':
+          this.updateMode(message.mode);
+          sendResponse({ success: true });
+          break;
+        case 'reloadPage':
+          window.location.reload();
+          sendResponse({ success: true });
+          break;
+        default:
+          sendResponse({ success: false, error: 'Unknown action' });
       }
       return true;
     });
