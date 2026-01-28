@@ -18,8 +18,8 @@ A minimal, fast browser extension for Chrome and Firefox that hides, grayscale, 
 ## Install (from source)
 
 ```bash
-git clone https://github.com/ozturkoktay/emoji-blocker-extension.git
-cd emoji-blocker-extension
+git clone https://github.com/ozturkoktay/i-dont-care-about-emojis.git
+cd i-dont-care-about-emojis
 npm install
 npm run build
 ```
@@ -44,7 +44,7 @@ npm run build
 <!-- ## Project structure
 
 ```
-emoji-blocker-extension/
+i-dont-care-about-emojis/
 ├── src/
 │   ├── core/
 │   │   ├── EmojiBlockerCore.js   # Detection + DOM processing

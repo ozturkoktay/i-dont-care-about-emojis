@@ -40,27 +40,27 @@ jobs:
       - name: Package Chrome extension
         run: |
           cd dist
-          zip -r ../emoji-blocker-chrome.zip .
+          zip -r ../i-dont-care-about-emojis-chrome.zip .
           cd ..
 
       - name: Package Firefox extension
         run: |
           cd dist
           # Firefox uses .xpi extension
-          zip -r ../emoji-blocker-firefox.xpi .
+          zip -r ../i-dont-care-about-emojis-firefox.xpi .
           cd ..
 
       - name: Upload Chrome artifact
         uses: actions/upload-artifact@v4
         with:
           name: chrome-extension
-          path: emoji-blocker-chrome.zip
+          path: i-dont-care-about-emojis-chrome.zip
 
       - name: Upload Firefox artifact
         uses: actions/upload-artifact@v4
         with:
           name: firefox-extension
-          path: emoji-blocker-firefox.xpi
+          path: i-dont-care-about-emojis-firefox.xpi
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
@@ -82,7 +82,7 @@ jobs:
       - name: Publish to Chrome Web Store
         uses: mnao305/chrome-extension-upload@v5.0.0
         with:
-          file-path: emoji-blocker-chrome.zip
+          file-path: i-dont-care-about-emojis-chrome.zip
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
@@ -110,7 +110,7 @@ jobs:
   #       uses: trmcnvn/firefox-addon@v1
   #       with:
   #         uuid: ${{ secrets.FIREFOX_EXTENSION_UUID }}
-  #         xpi: emoji-blocker-firefox.xpi
+  #         xpi: i-dont-care-about-emojis-firefox.xpi
   #         manifest: dist/manifest.json
   #         api-key: ${{ secrets.FIREFOX_API_KEY }}
   #         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
@@ -137,8 +137,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            chrome-extension/emoji-blocker-chrome.zip
-            firefox-extension/emoji-blocker-firefox.xpi
+            chrome-extension/i-dont-care-about-emojis-chrome.zip
+            firefox-extension/i-dont-care-about-emojis-firefox.xpi
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

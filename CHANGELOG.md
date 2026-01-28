@@ -51,4 +51,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[1.0.0]: https://github.com/ozturkoktay/emoji-blocker-extension/releases/tag/v1.0.0
+[1.0.0]: https://github.com/ozturkoktay/i-dont-care-about-emojis/releases/tag/v1.0.0

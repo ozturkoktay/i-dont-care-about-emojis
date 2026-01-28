@@ -1,5 +1,5 @@
 {
-  "name": "emoji-blocker-extension",
+  "name": "i-dont-care-about-emojis",
   "version": "1.0.0",
   "description": "Hide, grayscale, dim, or blur emojis across the web with a simple whitelist and per‑site control.",
   "type": "module",
@@ -18,14 +18,15 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "validate": "node scripts/validate-manifest.js",
-    "package:chrome": "cd dist && zip -r ../emoji-blocker-chrome.zip .",
-    "package:firefox": "cd dist && zip -r ../emoji-blocker-firefox.xpi ."
+    "package:chrome": "cd dist && zip -r ../i-dont-care-about-emojis-chrome.zip .",
+    "package:firefox": "cd dist && zip -r ../i-dont-care-about-emojis-firefox.xpi ."
   },
   "keywords": [
     "chrome-extension",
     "firefox-addon",
     "emoji",
     "blocker",
+    "i dont care about emojis",
     "productivity"
   ],
   "author": "Oktay Ozturk",
