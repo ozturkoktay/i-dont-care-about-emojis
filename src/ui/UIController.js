@@ -163,6 +163,8 @@ class PopupController extends BaseUIController {
       modeSelect: document.getElementById('modeSelect'),
       enabledCheckbox: document.getElementById('enabledCheckbox'),
       enabledLabel: document.getElementById('enabledLabel'),
+      whitelistInput: document.getElementById('whitelistInput'),
+      addWhitelistBtn: document.getElementById('addWhitelistBtn'),
       whitelistContainer: document.getElementById('whitelistContainer'),
       openOptions: document.getElementById('openOptions')
     };
@@ -231,6 +233,12 @@ class PopupController extends BaseUIController {
       this.toggleEnabled(this.elements.enabledCheckbox.checked);
       this.updateEnabledLabel();
     });
+    if (this.elements.addWhitelistBtn && this.elements.whitelistInput) {
+      this.elements.addWhitelistBtn.addEventListener('click', () => this.addWhitelistDomain());
+      this.elements.whitelistInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.addWhitelistDomain();
+      });
+    }
     this.elements.openOptions.addEventListener('click', () => chrome.runtime.openOptionsPage());
   }
 
@@ -258,6 +266,32 @@ class PopupController extends BaseUIController {
       chrome.tabs.reload(tab.id);
     } catch (error) {
       console.error('Error toggling whitelist:', error);
+    }
+  }
+
+  async addWhitelistDomain() {
+    const input = this.elements.whitelistInput;
+    if (!input) return;
+
+    const domain = input.value.trim();
+    if (!domain) return;
+
+    try {
+      const added = await this.getStorage().addToWhitelist(domain);
+      if (!added) return;
+
+      input.value = '';
+      await this.loadWhitelist();
+
+      const normalized = this.getStorage().normalizeDomain(domain);
+      if (normalized === this.currentDomain) {
+        this.isCurrentDomainWhitelisted = true;
+        this.updateWhitelistButton();
+      }
+
+      await UIUtils.reloadTabsForDomain(normalized);
+    } catch (error) {
+      console.error('Error adding domain to whitelist:', error);
     }
   }
 

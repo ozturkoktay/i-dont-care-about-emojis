@@ -4,6 +4,7 @@
   "description": "Hide, grayscale, dim, or blur emojis across the web with a simple whitelist and per‑site control.",
   "type": "module",
   "scripts": {
+    "prepare": "husky install",
     "build": "node scripts/build.js",
     "check": "npm run lint && npm run validate && npm test",
     "watch": "chokidar \"src/**/*\" \"manifest.json\" \"icons/**/*\" -c \"npm run check && npm run build\"",
@@ -11,6 +12,7 @@
     "dev:firefox": "npm run build && web-ext run --source-dir=dist --start-url about:debugging#/runtime/this-firefox",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
+    "lint-staged": "lint-staged",
     "format": "prettier --write \"src/**/*.{js,css,html}\"",
     "format:check": "prettier --check \"src/**/*.{js,css,html}\"",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
@@ -32,10 +34,24 @@
     "@types/chrome": "^0.0.268",
     "chokidar-cli": "^3.0.0",
     "eslint": "^8.57.0",
+    "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "web-ext": "^9.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.{css,html}": [
+      "prettier --write"
+    ],
+    "src/**/*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "manifest.json": [
+      "node scripts/validate-manifest.js"
+    ]
   },
   "prettier": {
     "singleQuote": true,
