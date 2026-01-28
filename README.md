@@ -74,23 +74,6 @@ npm run package:chrome
 npm run package:firefox
 ```
 
-## CI/CD (Auto‑publish)
-
-The GitHub Actions pipeline builds, packages, and publishes on **tagged releases**.
-
-### Required secrets
-
-**Chrome Web Store**
-- `CHROME_EXTENSION_ID`
-- `CHROME_CLIENT_ID`
-- `CHROME_CLIENT_SECRET`
-- `CHROME_REFRESH_TOKEN`
-
-**Firefox Add-ons**
-- `FIREFOX_EXTENSION_UUID`
-- `FIREFOX_API_KEY`
-- `FIREFOX_API_SECRET`
-
 ## License
 
 MIT — see [LICENSE](LICENSE).
@@ -105,6 +88,7 @@ For issues, questions, or suggestions:
 ## Roadmap
 
 - [ ] Import/export whitelist
+- [ ] Replace emojis with custom icons
 - [ ] Statistics dashboard
 - [ ] Sync settings across devices
 - [ ] Keyboard shortcuts
