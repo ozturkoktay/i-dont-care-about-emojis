@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emoji Blocker - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚫 Emoji Blocker Settings</h1>
+      <p class="subtitle">Configure emoji blocking preferences</p>
+    </header>
+
+    <main>
+      <!-- Master Toggle -->
+      <section class="card master-toggle-card">
+        <div class="toggle-container">
+          <div class="toggle-info">
+            <span class="toggle-label">Enable Emoji Blocking</span>
+            <p class="help-text">Master switch to enable or disable emoji blocking globally</p>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="enabledCheckbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>General Settings</h2>
+        
+        <div class="setting-group">
+          <div class="setting-item">
+            <label for="modeSelect">Blocking Mode</label>
+            <select id="modeSelect" class="input-control">
+              <option value="hide">Hide Completely</option>
+              <option value="desaturate">Grayscale (hover to reveal)</option>
+              <option value="dim">Dim (hover to reveal)</option>
+              <option value="blur">Blur (hover to reveal)</option>
+            </select>
+            <p class="help-text">Choose how emojis should be displayed. Non-hidden modes reveal the emoji on hover.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Whitelist Management</h2>
+        
+        <div class="add-domain">
+          <input 
+            type="text" 
+            id="domainInput" 
+            class="input-control" 
+            placeholder="Enter domain (e.g., example.com)"
+          >
+          <button id="addDomainBtn" class="btn btn-primary">Add to Whitelist</button>
+        </div>
+
+        <!-- Suggested Sites -->
+        <div class="suggested-sites">
+          <h3>Quick Add Suggested Sites</h3>
+          <p class="help-text">Sites where emojis are commonly needed. Click to add to whitelist.</p>
+          
+          <div class="suggested-category">
+            <h4>Messaging</h4>
+            <div class="suggested-grid" id="suggestedMessaging"></div>
+          </div>
+          
+          <div class="suggested-category">
+            <h4>Social Media</h4>
+            <div class="suggested-grid" id="suggestedSocial"></div>
+          </div>
+          
+          <div class="suggested-category">
+            <h4>Email</h4>
+            <div class="suggested-grid" id="suggestedEmail"></div>
+          </div>
+          
+          <div class="suggested-category">
+            <h4>Productivity</h4>
+            <div class="suggested-grid" id="suggestedProductivity"></div>
+          </div>
+          
+          <div class="suggested-category">
+            <h4>Developer</h4>
+            <div class="suggested-grid" id="suggestedDeveloper"></div>
+          </div>
+          
+          <div class="suggested-category">
+            <h4>Emoji Reference</h4>
+            <div class="suggested-grid" id="suggestedReference"></div>
+          </div>
+        </div>
+
+        <div class="whitelist-section">
+          <h3>Whitelisted Domains</h3>
+          <div id="whitelistContainer" class="whitelist-list">
+            <p class="empty-message">No domains whitelisted yet</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="clearWhitelistBtn" class="btn btn-danger-outline">Clear All Whitelist</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>About</h2>
+        <div class="about-content">
+          <p><strong>Emoji Blocker</strong> helps you focus by removing or desaturating emojis on web pages.</p>
+          <p class="version">Version 1.0.0</p>
+          <ul class="feature-list">
+            <li>✓ Block emojis without affecting images</li>
+            <li>✓ Whitelist your favorite websites</li>
+            <li>✓ Choose between hiding or desaturating emojis</li>
+            <li>✓ Works on all websites</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>2026 Emoji Blocker - Oktay Ozturk. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="../core/StorageManager.js"></script>
+  <script src="../ui/UIController.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

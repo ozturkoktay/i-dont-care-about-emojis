@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emoji Blocker Extension Test Page</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-card: #0f3460;
+      --text-primary: #eaeaea;
+      --text-secondary: #a0a0a0;
+      --accent: #e94560;
+      --accent-light: #ff6b6b;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --border: #2a2a4e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+      border-bottom: 3px solid var(--accent);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--accent-light);
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .test-section {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .test-section h2 {
+      color: var(--accent-light);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .test-section h2::before {
+      content: '🧪';
+      font-size: 1.5rem;
+    }
+
+    .test-section h3 {
+      color: var(--text-primary);
+      margin: 15px 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .emoji-item {
+      text-align: center;
+      font-size: 2rem;
+      padding: 10px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      transition: transform 0.2s;
+    }
+
+    .emoji-item:hover {
+      transform: scale(1.1);
+    }
+
+    .emoji-item span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 5px;
+    }
+
+    .text-content {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-size: 1rem;
+    }
+
+    .text-content p {
+      margin-bottom: 15px;
+    }
+
+    .text-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .inline-test {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .inline-test span {
+      background: var(--bg-card);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+    }
+
+    .chat-container {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .chat-message {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .chat-message.sent {
+      flex-direction: row-reverse;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .chat-bubble {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      background: var(--bg-secondary);
+    }
+
+    .chat-message.sent .chat-bubble {
+      background: var(--accent);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: var(--bg-card);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg-secondary);
+      color: var(--accent-light);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background: rgba(233, 69, 96, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 15px 0;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(233, 69, 96, 0.2);
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .card h4 {
+      color: var(--accent-light);
+      margin-bottom: 10px;
+    }
+
+    .list-test {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .list-test ul, .list-test ol {
+      padding-left: 25px;
+    }
+
+    .list-test li {
+      margin: 10px 0;
+    }
+
+    .notification {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .notification.info {
+      background: rgba(33, 150, 243, 0.2);
+      border-left: 4px solid #2196f3;
+    }
+
+    .notification.success {
+      background: rgba(76, 175, 80, 0.2);
+      border-left: 4px solid #4caf50;
+    }
+
+    .notification.warning {
+      background: rgba(255, 152, 0, 0.2);
+      border-left: 4px solid #ff9800;
+    }
+
+    .notification.error {
+      background: rgba(244, 67, 54, 0.2);
+      border-left: 4px solid #f44336;
+    }
+
+    .notification-icon {
+      font-size: 1.5rem;
+    }
+
+    .social-reactions {
+      display: flex;
+      gap: 20px;
+      padding: 15px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .reaction {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 15px;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .reaction:hover {
+      background: var(--accent);
+    }
+
+    .reaction-emoji {
+      font-size: 1.2rem;
+    }
+
+    .reaction-count {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .form-group {
+      margin: 15px 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .form-group input::placeholder, .form-group textarea::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin: 5px;
+    }
+
+    .status-badge.online {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+    }
+
+    .status-badge.away {
+      background: rgba(255, 152, 0, 0.2);
+      color: #ff9800;
+    }
+
+    .status-badge.busy {
+      background: rgba(244, 67, 54, 0.2);
+      color: #f44336;
+    }
+
+    .dynamic-content {
+      min-height: 100px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    #dynamic-output {
+      padding: 10px;
+      min-height: 60px;
+    }
+
+    .code-block {
+      background: #0d0d0d;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px;
+      margin-top: 30px;
+      background: var(--bg-secondary);
+      border-top: 3px solid var(--accent);
+    }
+
+    .footer p {
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      .emoji-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+      }
+
+      .chat-bubble {
+        max-width: 85%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧪 Emoji Blocker Test Page 🧪</h1>
+    <p>Comprehensive testing suite for the Emoji Blocker browser extension</p>
+    <p style="margin-top: 10px;">Test both <strong>Desaturate</strong> and <strong>Hide</strong> modes using the extension popup</p>
+  </header>
+
+  <div class="container">
+    <!-- Section 1: Emoticons -->
+    <section class="test-section">
+      <h2>Emoticons (Smileys & People)</h2>
+      <p>Testing the most common emoji category - facial expressions and people emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">😀<span>Grinning</span></div>
+        <div class="emoji-item">😃<span>Big Grin</span></div>
+        <div class="emoji-item">😄<span>Smiling</span></div>
+        <div class="emoji-item">😁<span>Beaming</span></div>
+        <div class="emoji-item">😆<span>Laughing</span></div>
+        <div class="emoji-item">😅<span>Sweat</span></div>
+        <div class="emoji-item">🤣<span>ROFL</span></div>
+        <div class="emoji-item">😂<span>Joy</span></div>
+        <div class="emoji-item">🙂<span>Slight Smile</span></div>
+        <div class="emoji-item">😊<span>Blush</span></div>
+        <div class="emoji-item">😇<span>Innocent</span></div>
+        <div class="emoji-item">🥰<span>Love</span></div>
+        <div class="emoji-item">😍<span>Heart Eyes</span></div>
+        <div class="emoji-item">�<span>Star Struck</span></div>
+        <div class="emoji-item">😘<span>Kiss</span></div>
+        <div class="emoji-item">😗<span>Kissing</span></div>
+        <div class="emoji-item">😚<span>Kiss Closed</span></div>
+        <div class="emoji-item">😙<span>Kiss Smiling</span></div>
+        <div class="emoji-item">🥲<span>Happy Tear</span></div>
+        <div class="emoji-item">😋<span>Yummy</span></div>
+        <div class="emoji-item">😛<span>Tongue</span></div>
+        <div class="emoji-item">😜<span>Wink Tongue</span></div>
+        <div class="emoji-item">🤪<span>Zany</span></div>
+        <div class="emoji-item">😝<span>Squint Tongue</span></div>
+      </div>
+
+      <h3>Negative Emotions</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">😢<span>Crying</span></div>
+        <div class="emoji-item">😭<span>Sobbing</span></div>
+        <div class="emoji-item">😤<span>Angry</span></div>
+        <div class="emoji-item">😠<span>Mad</span></div>
+        <div class="emoji-item">😡<span>Rage</span></div>
+        <div class="emoji-item">🤬<span>Cursing</span></div>
+        <div class="emoji-item">😰<span>Anxious</span></div>
+        <div class="emoji-item">😨<span>Fearful</span></div>
+        <div class="emoji-item">😱<span>Screaming</span></div>
+        <div class="emoji-item">😳<span>Flushed</span></div>
+        <div class="emoji-item">🤯<span>Mind Blown</span></div>
+        <div class="emoji-item">😵<span>Dizzy</span></div>
+      </div>
+    </section>
+
+    <!-- Section 2: Hand Gestures & Body Parts -->
+    <section class="test-section">
+      <h2>Hand Gestures & Body Parts</h2>
+      <p>Testing hand gesture emojis commonly used in messaging</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">👋<span>Wave</span></div>
+        <div class="emoji-item">🤚<span>Raised Back</span></div>
+        <div class="emoji-item">🖐️<span>Hand</span></div>
+        <div class="emoji-item">✋<span>Raised</span></div>
+        <div class="emoji-item">🖖<span>Vulcan</span></div>
+        <div class="emoji-item">👌<span>OK</span></div>
+        <div class="emoji-item">🤌<span>Pinched</span></div>
+        <div class="emoji-item">🤏<span>Pinching</span></div>
+        <div class="emoji-item">✌️<span>Victory</span></div>
+        <div class="emoji-item">🤞<span>Crossed</span></div>
+        <div class="emoji-item">🤟<span>Love You</span></div>
+        <div class="emoji-item">🤘<span>Rock</span></div>
+        <div class="emoji-item">🤙<span>Call Me</span></div>
+        <div class="emoji-item">👈<span>Left</span></div>
+        <div class="emoji-item">👉<span>Right</span></div>
+        <div class="emoji-item">👆<span>Up</span></div>
+        <div class="emoji-item">👇<span>Down</span></div>
+        <div class="emoji-item">☝️<span>Index Up</span></div>
+        <div class="emoji-item">👍<span>Thumbs Up</span></div>
+        <div class="emoji-item">👎<span>Thumbs Down</span></div>
+        <div class="emoji-item">✊<span>Fist</span></div>
+        <div class="emoji-item">👊<span>Punch</span></div>
+        <div class="emoji-item">🤛<span>Left Fist</span></div>
+        <div class="emoji-item">🤜<span>Right Fist</span></div>
+        <div class="emoji-item">👏<span>Clap</span></div>
+        <div class="emoji-item">🙌<span>Raising</span></div>
+        <div class="emoji-item">🤲<span>Palms Up</span></div>
+        <div class="emoji-item">🙏<span>Pray</span></div>
+      </div>
+    </section>
+
+    <!-- Section 3: Animals & Nature -->
+    <section class="test-section">
+      <h2>Animals & Nature</h2>
+      <p>Testing nature-related emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">🐶<span>Dog</span></div>
+        <div class="emoji-item">🐱<span>Cat</span></div>
+        <div class="emoji-item">🐭<span>Mouse</span></div>
+        <div class="emoji-item">🐹<span>Hamster</span></div>
+        <div class="emoji-item">🐰<span>Rabbit</span></div>
+        <div class="emoji-item">🦊<span>Fox</span></div>
+        <div class="emoji-item">🐻<span>Bear</span></div>
+        <div class="emoji-item">🐼<span>Panda</span></div>
+        <div class="emoji-item">🐨<span>Koala</span></div>
+        <div class="emoji-item">🐯<span>Tiger</span></div>
+        <div class="emoji-item">🦁<span>Lion</span></div>
+        <div class="emoji-item">�<span>Cow</span></div>
+        <div class="emoji-item">🐷<span>Pig</span></div>
+        <div class="emoji-item">🐸<span>Frog</span></div>
+        <div class="emoji-item">🐵<span>Monkey</span></div>
+        <div class="emoji-item">🐔<span>Chicken</span></div>
+        <div class="emoji-item">🐧<span>Penguin</span></div>
+        <div class="emoji-item">🐦<span>Bird</span></div>
+        <div class="emoji-item">🦅<span>Eagle</span></div>
+        <div class="emoji-item">🦆<span>Duck</span></div>
+        <div class="emoji-item">🦉<span>Owl</span></div>
+        <div class="emoji-item">🐺<span>Wolf</span></div>
+        <div class="emoji-item">🐗<span>Boar</span></div>
+        <div class="emoji-item">🐴<span>Horse</span></div>
+        <div class="emoji-item">🦄<span>Unicorn</span></div>
+        <div class="emoji-item">🐝<span>Bee</span></div>
+        <div class="emoji-item">🦋<span>Butterfly</span></div>
+        <div class="emoji-item">🐛<span>Bug</span></div>
+      </div>
+
+      <h3>Plants & Flowers</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">🌸<span>Cherry</span></div>
+        <div class="emoji-item">💐<span>Bouquet</span></div>
+        <div class="emoji-item">🌷<span>Tulip</span></div>
+        <div class="emoji-item">🌹<span>Rose</span></div>
+        <div class="emoji-item">🌺<span>Hibiscus</span></div>
+        <div class="emoji-item">🌻<span>Sunflower</span></div>
+        <div class="emoji-item">🌼<span>Blossom</span></div>
+        <div class="emoji-item">🌱<span>Seedling</span></div>
+        <div class="emoji-item">🌲<span>Evergreen</span></div>
+        <div class="emoji-item">🌳<span>Tree</span></div>
+        <div class="emoji-item">🌴<span>Palm</span></div>
+        <div class="emoji-item">🌵<span>Cactus</span></div>
+      </div>
+    </section>
+
+    <!-- Section 4: Food & Drink -->
+    <section class="test-section">
+      <h2>Food & Drink</h2>
+      <p>Testing food and beverage emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">🍎<span>Apple</span></div>
+        <div class="emoji-item">🍊<span>Orange</span></div>
+        <div class="emoji-item">🍋<span>Lemon</span></div>
+        <div class="emoji-item">🍌<span>Banana</span></div>
+        <div class="emoji-item">🍉<span>Watermelon</span></div>
+        <div class="emoji-item">🍇<span>Grapes</span></div>
+        <div class="emoji-item">🍓<span>Strawberry</span></div>
+        <div class="emoji-item">🫐<span>Blueberries</span></div>
+        <div class="emoji-item">🍕<span>Pizza</span></div>
+        <div class="emoji-item">🍔<span>Burger</span></div>
+        <div class="emoji-item">🍟<span>Fries</span></div>
+        <div class="emoji-item">🌭<span>Hot Dog</span></div>
+        <div class="emoji-item">🥪<span>Sandwich</span></div>
+        <div class="emoji-item">�<span>Taco</span></div>
+        <div class="emoji-item">🌯<span>Burrito</span></div>
+        <div class="emoji-item">🍣<span>Sushi</span></div>
+        <div class="emoji-item">🍜<span>Ramen</span></div>
+        <div class="emoji-item">🍝<span>Pasta</span></div>
+        <div class="emoji-item">🍦<span>Ice Cream</span></div>
+        <div class="emoji-item">�<span>Donut</span></div>
+        <div class="emoji-item">🍪<span>Cookie</span></div>
+        <div class="emoji-item">🎂<span>Cake</span></div>
+        <div class="emoji-item">☕<span>Coffee</span></div>
+        <div class="emoji-item">🍵<span>Tea</span></div>
+        <div class="emoji-item">🥤<span>Soda</span></div>
+        <div class="emoji-item">🍺<span>Beer</span></div>
+        <div class="emoji-item">🍷<span>Wine</span></div>
+        <div class="emoji-item">🥂<span>Cheers</span></div>
+      </div>
+    </section>
+
+    <!-- Section 5: Travel & Places -->
+    <section class="test-section">
+      <h2>Travel & Places</h2>
+      <p>Testing transport and location emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">🚗<span>Car</span></div>
+        <div class="emoji-item">🚕<span>Taxi</span></div>
+        <div class="emoji-item">🚌<span>Bus</span></div>
+        <div class="emoji-item">🚎<span>Trolleybus</span></div>
+        <div class="emoji-item">🏎️<span>Racing</span></div>
+        <div class="emoji-item">🚓<span>Police</span></div>
+        <div class="emoji-item">🚑<span>Ambulance</span></div>
+        <div class="emoji-item">🚒<span>Fire</span></div>
+        <div class="emoji-item">✈️<span>Plane</span></div>
+        <div class="emoji-item">🚀<span>Rocket</span></div>
+        <div class="emoji-item">🛸<span>UFO</span></div>
+        <div class="emoji-item">🚁<span>Helicopter</span></div>
+        <div class="emoji-item">⛵<span>Sailboat</span></div>
+        <div class="emoji-item">🚢<span>Ship</span></div>
+        <div class="emoji-item">🚂<span>Train</span></div>
+        <div class="emoji-item">🚆<span>Metro</span></div>
+        <div class="emoji-item">🏠<span>House</span></div>
+        <div class="emoji-item">🏢<span>Office</span></div>
+        <div class="emoji-item">🏥<span>Hospital</span></div>
+        <div class="emoji-item">🏫<span>School</span></div>
+        <div class="emoji-item">🏰<span>Castle</span></div>
+        <div class="emoji-item">🗼<span>Tower</span></div>
+        <div class="emoji-item">🗽<span>Liberty</span></div>
+        <div class="emoji-item">🌉<span>Bridge</span></div>
+      </div>
+    </section>
+
+    <!-- Section 6: Objects & Symbols -->
+    <section class="test-section">
+      <h2>Objects & Symbols</h2>
+      <p>Testing various object and symbol emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">💻<span>Laptop</span></div>
+        <div class="emoji-item">🖥️<span>Desktop</span></div>
+        <div class="emoji-item">📱<span>Phone</span></div>
+        <div class="emoji-item">📞<span>Telephone</span></div>
+        <div class="emoji-item">⌨️<span>Keyboard</span></div>
+        <div class="emoji-item">🖱️<span>Mouse</span></div>
+        <div class="emoji-item">💾<span>Floppy</span></div>
+        <div class="emoji-item">💿<span>CD</span></div>
+        <div class="emoji-item">📀<span>DVD</span></div>
+        <div class="emoji-item">�<span>Controller</span></div>
+        <div class="emoji-item">🕹️<span>Joystick</span></div>
+        <div class="emoji-item">🎲<span>Dice</span></div>
+        <div class="emoji-item">💡<span>Bulb</span></div>
+        <div class="emoji-item">🔦<span>Flashlight</span></div>
+        <div class="emoji-item">📷<span>Camera</span></div>
+        <div class="emoji-item">🎥<span>Video</span></div>
+        <div class="emoji-item">📺<span>TV</span></div>
+        <div class="emoji-item">📻<span>Radio</span></div>
+        <div class="emoji-item">⏰<span>Alarm</span></div>
+        <div class="emoji-item">⌚<span>Watch</span></div>
+        <div class="emoji-item">🔑<span>Key</span></div>
+        <div class="emoji-item">🔒<span>Lock</span></div>
+        <div class="emoji-item">🔓<span>Unlock</span></div>
+        <div class="emoji-item">🔧<span>Wrench</span></div>
+      </div>
+
+      <h3>Hearts & Love Symbols</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">❤️<span>Red</span></div>
+        <div class="emoji-item">🧡<span>Orange</span></div>
+        <div class="emoji-item">💛<span>Yellow</span></div>
+        <div class="emoji-item">💚<span>Green</span></div>
+        <div class="emoji-item">💙<span>Blue</span></div>
+        <div class="emoji-item">💜<span>Purple</span></div>
+        <div class="emoji-item">🖤<span>Black</span></div>
+        <div class="emoji-item">🤍<span>White</span></div>
+        <div class="emoji-item">🤎<span>Brown</span></div>
+        <div class="emoji-item">💔<span>Broken</span></div>
+        <div class="emoji-item">💕<span>Two</span></div>
+        <div class="emoji-item">💞<span>Revolving</span></div>
+        <div class="emoji-item">💓<span>Beating</span></div>
+        <div class="emoji-item">💗<span>Growing</span></div>
+        <div class="emoji-item">💖<span>Sparkling</span></div>
+        <div class="emoji-item">💘<span>Arrow</span></div>
+      </div>
+    </section>
+
+    <!-- Section 7: Weather & Sky -->
+    <section class="test-section">
+      <h2>Weather & Sky</h2>
+      <p>Testing weather and celestial emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">☀️<span>Sun</span></div>
+        <div class="emoji-item">🌤️<span>Partly</span></div>
+        <div class="emoji-item">⛅<span>Cloudy</span></div>
+        <div class="emoji-item">🌥️<span>Mostly</span></div>
+        <div class="emoji-item">☁️<span>Cloud</span></div>
+        <div class="emoji-item">🌦️<span>Rainy</span></div>
+        <div class="emoji-item">🌧️<span>Rain</span></div>
+        <div class="emoji-item">⛈️<span>Thunder</span></div>
+        <div class="emoji-item">�️<span>Lightning</span></div>
+        <div class="emoji-item">🌨️<span>Snow</span></div>
+        <div class="emoji-item">❄️<span>Snowflake</span></div>
+        <div class="emoji-item">🌪️<span>Tornado</span></div>
+        <div class="emoji-item">🌈<span>Rainbow</span></div>
+        <div class="emoji-item">🌙<span>Moon</span></div>
+        <div class="emoji-item">⭐<span>Star</span></div>
+        <div class="emoji-item">🌟<span>Glowing</span></div>
+        <div class="emoji-item">✨<span>Sparkles</span></div>
+        <div class="emoji-item">💫<span>Dizzy</span></div>
+      </div>
+    </section>
+
+    <!-- Section 8: Flags -->
+    <section class="test-section">
+      <h2>Flags (Regional Indicators)</h2>
+      <p>Testing country flag emojis which use regional indicator symbols</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">🇺🇸<span>USA</span></div>
+        <div class="emoji-item">🇬🇧<span>UK</span></div>
+        <div class="emoji-item">🇫🇷<span>France</span></div>
+        <div class="emoji-item">�🇪<span>Germany</span></div>
+        <div class="emoji-item">�🇹<span>Italy</span></div>
+        <div class="emoji-item">🇪🇸<span>Spain</span></div>
+        <div class="emoji-item">🇯🇵<span>Japan</span></div>
+        <div class="emoji-item">🇰🇷<span>Korea</span></div>
+        <div class="emoji-item">🇨🇳<span>China</span></div>
+        <div class="emoji-item">�🇳<span>India</span></div>
+        <div class="emoji-item">🇧🇷<span>Brazil</span></div>
+        <div class="emoji-item">🇨🇦<span>Canada</span></div>
+        <div class="emoji-item">🇦🇺<span>Australia</span></div>
+        <div class="emoji-item">🇷🇺<span>Russia</span></div>
+        <div class="emoji-item">🇲🇽<span>Mexico</span></div>
+        <div class="emoji-item">🇹🇷<span>Turkey</span></div>
+      </div>
+    </section>
+
+    <!-- Section 9: Inline Text Tests -->
+    <section class="test-section">
+      <h2>Inline Text with Emojis</h2>
+      <p>Testing how emojis appear within text content</p>
+      
+      <div class="text-content">
+        <p>Hello! 👋 Welcome to the Emoji Blocker test page! We're so excited 🎉 to have you here. This extension helps you manage 🛠️ emojis on any website you visit.</p>
+        
+        <p>Here are some common use cases for emoji blocking:</p>
+        <p>✅ Reduce visual clutter on social media feeds</p>
+        <p>✅ Focus better while reading articles 📚</p>
+        <p>✅ Accessibility for users who prefer text-only content 👁️</p>
+        <p>✅ Professional environments where emojis may be distracting 💼</p>
+        
+        <p>Did you know? 🤔 Emojis can sometimes make text harder to read for screen readers and assistive technologies. By desaturating or hiding them, you can improve accessibility! 🌟</p>
+        
+        <p>The weather today is ☀️ sunny with a chance of 🌧️ rain later. Don't forget your ☂️ umbrella!</p>
+      </div>
+
+      <h3>Short Inline Phrases</h3>
+      <div class="inline-test">
+        <span>Good morning! ☀️</span>
+        <span>I ❤️ coding</span>
+        <span>Coffee time ☕</span>
+        <span>Let's go! 🚀</span>
+        <span>Great job! 👏</span>
+        <span>Think about it 🤔</span>
+        <span>Amazing! �</span>
+        <span>On fire! 🔥</span>
+        <span>Music vibes 🎵</span>
+        <span>Party time 🎉</span>
+        <span>Sleepy... 😴</span>
+        <span>So cool! 😎</span>
+      </div>
+    </section>
+
+    <!-- Section 10: Chat Simulation -->
+    <section class="test-section">
+      <h2>Chat/Messaging Simulation</h2>
+      <p>Testing how emojis appear in a typical chat interface</p>
+      
+      <div class="chat-container">
+        <div class="chat-message">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">Hey! 👋 How are you doing today?</div>
+        </div>
+        
+        <div class="chat-message sent">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">I'm doing great! 😊 Thanks for asking! How about you?</div>
+        </div>
+        
+        <div class="chat-message">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">Pretty good! 👍 Just finished a big project at work 💻 and now I'm celebrating 🎉</div>
+        </div>
+        
+        <div class="chat-message sent">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">That's awesome! 🙌 Congratulations! 🎊 You deserve it! ⭐</div>
+        </div>
+        
+        <div class="chat-message">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">Thanks! 🥰 Want to grab some coffee ☕ later to celebrate?</div>
+        </div>
+        
+        <div class="chat-message sent">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">Absolutely! � Count me in! See you at 5pm ⏰</div>
+        </div>
+        
+        <div class="chat-message">
+          <div class="chat-avatar">👤</div>
+          <div class="chat-bubble">Perfect! 💯 Can't wait! 😄👍🎉✨</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 11: Table with Emojis -->
+    <section class="test-section">
+      <h2>Tables with Emojis</h2>
+      <p>Testing emoji display within table structures</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Task</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>✅ Complete</td>
+            <td>Design homepage layout 🎨</td>
+            <td>🔴 High</td>
+            <td>Jan 15 📅</td>
+          </tr>
+          <tr>
+            <td>🔄 In Progress</td>
+            <td>Implement user authentication 🔐</td>
+            <td>🔴 High</td>
+            <td>Jan 20 📅</td>
+          </tr>
+          <tr>
+            <td>⏸️ On Hold</td>
+            <td>Write documentation 📝</td>
+            <td>🟡 Medium</td>
+            <td>Jan 25 📅</td>
+          </tr>
+          <tr>
+            <td>❌ Blocked</td>
+            <td>Deploy to production 🚀</td>
+            <td>🔴 High</td>
+            <td>Jan 30 📅</td>
+          </tr>
+          <tr>
+            <td>📋 Todo</td>
+            <td>Code review 👀</td>
+            <td>🟢 Low</td>
+            <td>Feb 5 📅</td>
+          </tr>
+          <tr>
+            <td>✅ Complete</td>
+            <td>Fix bug #123 🐛</td>
+            <td>🟡 Medium</td>
+            <td>Jan 10 📅</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 12: Cards & Buttons -->
+    <section class="test-section">
+      <h2>UI Components with Emojis</h2>
+      <p>Testing emojis in various UI elements</p>
+      
+      <h3>Feature Cards</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h4>Secure</h4>
+          <p>Your data is protected with end-to-end encryption 🛡️</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h4>Fast</h4>
+          <p>Lightning-fast performance for seamless experience 🚀</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌍</div>
+          <h4>Global</h4>
+          <p>Available worldwide with 99.9% uptime 🌐</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <h4>Affordable</h4>
+          <p>Great value for money with flexible pricing 💎</p>
+        </div>
+      </div>
+
+      <h3>Buttons with Emojis</h3>
+      <div class="button-group">
+        <button>🏠 Home</button>
+        <button>📧 Contact</button>
+        <button>🛒 Shop Now</button>
+        <button>❤️ Like</button>
+        <button>📤 Share</button>
+        <button>💾 Save</button>
+        <button>🗑️ Delete</button>
+        <button>⚙️ Settings</button>
+        <button>🔔 Notifications</button>
+        <button>🎁 Rewards</button>
+      </div>
+    </section>
+
+    <!-- Section 13: Lists -->
+    <section class="test-section">
+      <h2>Lists with Emojis</h2>
+      <p>Testing emojis in ordered and unordered lists</p>
+      
+      <div class="list-test">
+        <h3>🛒 Shopping List</h3>
+        <ul>
+          <li>🥛 Milk - 2 gallons</li>
+          <li>🍞 Bread - whole wheat</li>
+          <li>🥚 Eggs - dozen</li>
+          <li>🧈 Butter</li>
+          <li>🍎 Apples - 6 pieces</li>
+          <li>🥕 Carrots - 1 bag</li>
+          <li>🧀 Cheese - cheddar</li>
+          <li>🍗 Chicken breast</li>
+        </ul>
+      </div>
+
+      <div class="list-test">
+        <h3>📋 Daily Tasks</h3>
+        <ol>
+          <li>☀️ Wake up at 6:00 AM</li>
+          <li>🏃 Morning jog for 30 minutes</li>
+          <li>🚿 Take a shower</li>
+          <li>☕ Breakfast and coffee</li>
+          <li>💻 Work on project</li>
+          <li>🥗 Lunch break at noon</li>
+          <li>📞 Team meeting at 2 PM</li>
+          <li>📝 Review and plan tomorrow</li>
+          <li>🌙 Relax and unwind</li>
+          <li>😴 Sleep by 10 PM</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Section 14: Notifications/Alerts -->
+    <section class="test-section">
+      <h2>Notifications & Alerts</h2>
+      <p>Testing emojis in notification-style components</p>
+      
+      <div class="notification info">
+        <span class="notification-icon">ℹ️</span>
+        <span>This is an informational message. Click here to learn more 📚</span>
+      </div>
+      
+      <div class="notification success">
+        <span class="notification-icon">✅</span>
+        <span>Success! Your changes have been saved 🎉</span>
+      </div>
+      
+      <div class="notification warning">
+        <span class="notification-icon">⚠️</span>
+        <span>Warning: Your session will expire in 5 minutes ⏰</span>
+      </div>
+      
+      <div class="notification error">
+        <span class="notification-icon">❌</span>
+        <span>Error: Unable to connect to server. Please try again 🔄</span>
+      </div>
+    </section>
+
+    <!-- Section 15: Social Media Reactions -->
+    <section class="test-section">
+      <h2>Social Media Reactions</h2>
+      <p>Testing emoji reactions similar to social platforms</p>
+      
+      <div class="text-content">
+        <p>Just launched my new website! 🚀 Check it out and let me know what you think! 💭</p>
+      </div>
+      
+      <div class="social-reactions">
+        <div class="reaction">
+          <span class="reaction-emoji">👍</span>
+          <span class="reaction-count">245</span>
+        </div>
+        <div class="reaction">
+          <span class="reaction-emoji">❤️</span>
+          <span class="reaction-count">128</span>
+        </div>
+        <div class="reaction">
+          <span class="reaction-emoji">😂</span>
+          <span class="reaction-count">56</span>
+        </div>
+        <div class="reaction">
+          <span class="reaction-emoji">�</span>
+          <span class="reaction-count">34</span>
+        </div>
+        <div class="reaction">
+          <span class="reaction-emoji">😢</span>
+          <span class="reaction-count">12</span>
+        </div>
+        <div class="reaction">
+          <span class="reaction-emoji">😡</span>
+          <span class="reaction-count">3</span>
+        </div>
+      </div>
+
+      <h3>Status Badges</h3>
+      <div style="margin: 15px 0;">
+        <span class="status-badge online">🟢 Online</span>
+        <span class="status-badge away">🟡 Away</span>
+        <span class="status-badge busy">🔴 Busy</span>
+        <span class="status-badge online">✅ Available</span>
+        <span class="status-badge away">💤 Sleeping</span>
+        <span class="status-badge busy">🚫 Do Not Disturb</span>
+      </div>
+    </section>
+
+    <!-- Section 16: Form Inputs -->
+    <section class="test-section">
+      <h2>Form Inputs with Emojis</h2>
+      <p>Testing emojis in form labels and placeholders</p>
+      
+      <div class="form-group">
+        <label>👤 Full Name</label>
+        <input type="text" placeholder="Enter your name... 📝">
+      </div>
+      
+      <div class="form-group">
+        <label>📧 Email Address</label>
+        <input type="email" placeholder="your.email@example.com 💌">
+      </div>
+      
+      <div class="form-group">
+        <label>📱 Phone Number</label>
+        <input type="tel" placeholder="+1 (555) 123-4567 📞">
+      </div>
+      
+      <div class="form-group">
+        <label>💬 Message</label>
+        <textarea rows="4" placeholder="Type your message here... 🖊️ Feel free to express yourself! 😊"></textarea>
+      </div>
+      
+      <div class="button-group">
+        <button>📤 Submit</button>
+        <button>🔄 Reset</button>
+      </div>
+    </section>
+
+    <!-- Section 17: Dynamic Content Test -->
+    <section class="test-section">
+      <h2>Dynamic Content Test</h2>
+      <p>Testing how the extension handles dynamically added emojis (via MutationObserver)</p>
+      
+      <div class="dynamic-content">
+        <div class="button-group">
+          <button onclick="addDynamicContent()">➕ Add Random Emoji Content</button>
+          <button onclick="clearDynamicContent()">🗑️ Clear</button>
+        </div>
+        <div id="dynamic-output"></div>
+      </div>
+
+      <script>
+        const emojiSets = [
+          '🎉 Party time! 🥳🎊🎈',
+          '😀 Hello! How are you? 👋',
+          '🌟 Amazing work! ⭐✨💫',
+          '🔥 This is fire! 🔥🔥🔥',
+          '❤️ Love this! 💕💖💗',
+          '🚀 To the moon! 🌙✨',
+          '☕ Coffee break! �🍪',
+          '� Game on! 🕹️👾🎯',
+          '📚 Study time! 📖✏️📝',
+          '🌈 Rainbow vibes! 🦄✨🌸',
+          '🐱 Cute cat! 🐈😻🐾',
+          '🍕 Pizza time! 🍔🌭🍟',
+          '💻 Coding mode! 👨‍💻⌨️🖥️',
+          '🎵 Music! 🎶🎸🎹🎤',
+          '🏆 Winner! 🥇🎖️👑'
+        ];
+
+        function addDynamicContent() {
+          const output = document.getElementById('dynamic-output');
+          const randomEmoji = emojiSets[Math.floor(Math.random() * emojiSets.length)];
+          const p = document.createElement('p');
+          p.textContent = `[${new Date().toLocaleTimeString()}] ${randomEmoji}`;
+          p.style.marginBottom = '10px';
+          output.appendChild(p);
+        }
+
+        function clearDynamicContent() {
+          document.getElementById('dynamic-output').innerHTML = '';
+        }
+      </script>
+    </section>
+
+    <!-- Section 18: Special Characters & Edge Cases -->
+    <section class="test-section">
+      <h2>Edge Cases & Special Scenarios</h2>
+      <p>Testing unusual emoji combinations and edge cases</p>
+
+      <h3>Consecutive Emojis</h3>
+      <div class="text-content">
+        <p>😀😃😄😁😆😅🤣😂🙂🙃😉😊😇</p>
+        <p>❤️🧡💛💚💙💜🖤🤍🤎💔❣️💕💞💓💗💖💘💝</p>
+        <p>👍👍👍👍👍👍👍👍👍👍</p>
+      </div>
+
+      <h3>Emojis with Skin Tone Modifiers</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">👋🏻<span>Light</span></div>
+        <div class="emoji-item">👋🏼<span>Med-Light</span></div>
+        <div class="emoji-item">👋🏽<span>Medium</span></div>
+        <div class="emoji-item">👋🏾<span>Med-Dark</span></div>
+        <div class="emoji-item">👋🏿<span>Dark</span></div>
+        <div class="emoji-item">👍🏻<span>Light</span></div>
+        <div class="emoji-item">👍🏼<span>Med-Light</span></div>
+        <div class="emoji-item">👍🏽<span>Medium</span></div>
+        <div class="emoji-item">👍🏾<span>Med-Dark</span></div>
+        <div class="emoji-item">👍🏿<span>Dark</span></div>
+      </div>
+
+      <h3>ZWJ (Zero Width Joiner) Sequences</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">👨‍�‍👧‍👦<span>Family</span></div>
+        <div class="emoji-item">👨‍💻<span>Coder</span></div>
+        <div class="emoji-item">�‍🔬<span>Scientist</span></div>
+        <div class="emoji-item">👨‍🍳<span>Chef</span></div>
+        <div class="emoji-item">�‍🎨<span>Artist</span></div>
+        <div class="emoji-item">👨‍🚀<span>Astronaut</span></div>
+        <div class="emoji-item">🏳️‍🌈<span>Pride</span></div>
+        <div class="emoji-item">🏴‍☠️<span>Pirate</span></div>
+      </div>
+
+      <h3>Emojis at String Boundaries</h3>
+      <div class="text-content">
+        <p>🚀Starting with emoji</p>
+        <p>Ending with emoji🚀</p>
+        <p>🚀Both sides🚀</p>
+        <p>🚀🚀Double start</p>
+        <p>Double end🚀🚀</p>
+      </div>
+
+      <h3>Mixed Content (Emoji + Special Characters)</h3>
+      <div class="text-content">
+        <p>Price: $99.99 💰 (50% off! 🎉)</p>
+        <p>Email: test@example.com 📧</p>
+        <p>Phone: +1-555-123-4567 📱</p>
+        <p>&lt;html&gt; 💻 &amp; &lt;css&gt; 🎨</p>
+        <p>Math: 2 + 2 = 4 ✅ | 2 × 2 = 4 ✅</p>
+      </div>
+
+      <h3>Keycap Emojis</h3>
+      <div class="emoji-grid">
+        <div class="emoji-item">#️⃣<span>Hash</span></div>
+        <div class="emoji-item">*️⃣<span>Asterisk</span></div>
+        <div class="emoji-item">0️⃣<span>Zero</span></div>
+        <div class="emoji-item">1️⃣<span>One</span></div>
+        <div class="emoji-item">2️⃣<span>Two</span></div>
+        <div class="emoji-item">3️⃣<span>Three</span></div>
+        <div class="emoji-item">4️⃣<span>Four</span></div>
+        <div class="emoji-item">5️⃣<span>Five</span></div>
+        <div class="emoji-item">6️⃣<span>Six</span></div>
+        <div class="emoji-item">7️⃣<span>Seven</span></div>
+        <div class="emoji-item">8️⃣<span>Eight</span></div>
+        <div class="emoji-item">9️⃣<span>Nine</span></div>
+        <div class="emoji-item">🔟<span>Ten</span></div>
+      </div>
+    </section>
+
+    <!-- Section 19: Misc Symbols -->
+    <section class="test-section">
+      <h2>Miscellaneous Symbols</h2>
+      <p>Testing various other Unicode symbols that may be detected as emojis</p>
+      
+      <div class="emoji-grid">
+        <div class="emoji-item">�️<span>Copyright</span></div>
+        <div class="emoji-item">�️<span>Registered</span></div>
+        <div class="emoji-item">™️<span>Trademark</span></div>
+        <div class="emoji-item">♠️<span>Spade</span></div>
+        <div class="emoji-item">♥️<span>Heart</span></div>
+        <div class="emoji-item">♦️<span>Diamond</span></div>
+        <div class="emoji-item">♣️<span>Club</span></div>
+        <div class="emoji-item">🎴<span>Flower</span></div>
+        <div class="emoji-item">🀄<span>Mahjong</span></div>
+        <div class="emoji-item">♻️<span>Recycle</span></div>
+        <div class="emoji-item">⚛️<span>Atom</span></div>
+        <div class="emoji-item">☢️<span>Radioactive</span></div>
+        <div class="emoji-item">☣️<span>Biohazard</span></div>
+        <div class="emoji-item">⚕️<span>Medical</span></div>
+        <div class="emoji-item">⚖️<span>Balance</span></div>
+        <div class="emoji-item">⚔️<span>Swords</span></div>
+        <div class="emoji-item">🔱<span>Trident</span></div>
+        <div class="emoji-item">⚜️<span>Fleur</span></div>
+        <div class="emoji-item">�️<span>Peace</span></div>
+        <div class="emoji-item">✝️<span>Cross</span></div>
+        <div class="emoji-item">☪️<span>Star Moon</span></div>
+        <div class="emoji-item">🕉️<span>Om</span></div>
+        <div class="emoji-item">☯️<span>Yin Yang</span></div>
+        <div class="emoji-item">♾️<span>Infinity</span></div>
+      </div>
+    </section>
+
+    <!-- Section 20: Performance Test -->
+    <section class="test-section">
+      <h2>Performance Test</h2>
+      <p>A paragraph with many emojis to test performance</p>
+      
+      <div class="text-content">
+        <p>
+          🌟 Lorem ipsum dolor sit amet 😀 consectetur adipiscing elit 🎉 Sed do eiusmod tempor 🔥 incididunt ut labore et dolore magna aliqua 💪 Ut enim ad minim veniam 🚀 quis nostrud exercitation ullamco laboris 💻 nisi ut aliquip ex ea commodo consequat 🎯 Duis aute irure dolor in reprehenderit 🌈 in voluptate velit esse cillum dolore 🌸 eu fugiat nulla pariatur ✨ Excepteur sint occaecat cupidatat 🏆 non proident sunt in culpa 👑 qui officia deserunt mollit anim 🎵 id est laborum 🌙
+        </p>
+        <p>
+          😀😃😄😁😆😅🤣😂🙂🙃😉😊😇🥰😍�😘😗☺😚😙🥲😋😛😜🤪😝🤑🤗🤭🤫🤔🤐🤨😐😑😶😏😒🙄😬🤥😌😔😪🤤😴😷🤒🤕🤢�🤧🥵🥶🥴😵🤯🤠🥳🥸😎🤓🧐😕😟🙁☹�😯😲😳🥺😦😧😨😰😥😢😭😱😖😣😞😓�😫🥱😤😡😠🤬
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <p>🧪 Emoji Blocker Extension Test Page 🧪</p>
+    <p>Test both <strong>Desaturate</strong> 🌑 and <strong>Hide</strong> 👻 modes using the extension popup</p>
+    <p style="margin-top: 15px;">Made with ❤️ for testing purposes</p>
+  </footer>
+</body>
+</html>

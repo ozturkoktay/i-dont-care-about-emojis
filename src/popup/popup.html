@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emoji Blocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-row">
+        <h1>🚫 Emoji Blocker</h1>
+        <div class="header-toggle">
+          <span id="enabledLabel" class="header-toggle-label">Enable</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="enabledCheckbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Current Domain Section -->
+      <section class="current-domain">
+        <h2>Current Website</h2>
+        <div class="domain-info">
+          <span id="currentDomain" class="domain-name">Loading...</span>
+          <button id="toggleWhitelist" class="btn btn-primary">
+            Add to Whitelist
+          </button>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section class="settings">
+        <h2>Settings</h2>
+        
+        <div class="setting-item">
+          <label for="modeSelect">Blocking Mode:</label>
+          <select id="modeSelect" class="select-control">
+            <option value="hide">Hide Completely</option>
+            <option value="desaturate">Grayscale (hover to reveal)</option>
+            <option value="dim">Dim (hover to reveal)</option>
+            <option value="blur">Blur (hover to reveal)</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Whitelist Section -->
+      <section class="whitelist">
+        <h2>Whitelisted Websites</h2>
+        <div id="whitelistContainer" class="whitelist-list">
+          <p class="empty-message">No websites whitelisted</p>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="actions">
+        <button id="openOptions" class="btn btn-secondary">
+          Open Settings Page
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <p class="version">v1.0.0</p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="../core/StorageManager.js"></script>
+  <script src="../ui/UIController.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
