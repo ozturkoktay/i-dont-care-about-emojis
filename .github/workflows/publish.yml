@@ -5,6 +5,12 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      publish_to_chrome:
+        description: 'Publish to Chrome Web Store'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   build:
@@ -62,7 +68,7 @@ jobs:
   publish-chrome:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: inputs.publish_to_chrome == true
     
     steps:
       - name: Download Chrome artifact
@@ -83,7 +89,7 @@ jobs:
   # publish-firefox:
   #   needs: build
   #   runs-on: ubuntu-latest
-  #   if: startsWith(github.ref, 'refs/tags/')
+  #   if: inputs.publish_to_firefox == true
   #   
   #   steps:
   #     - name: Download Firefox artifact
@@ -107,7 +113,7 @@ jobs:
   #         api-secret: ${{ secrets.FIREFOX_API_SECRET }}
 
   create-release:
-    needs: [publish-chrome]
+    needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     
