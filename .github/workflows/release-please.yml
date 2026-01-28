@@ -12,6 +12,7 @@ on:
       - 'package-lock.json'
       - 'jest.config.js'
       - '.github/workflows/**'
+  workflow_dispatch:
 
 permissions:
   contents: write
