@@ -23,7 +23,6 @@ The extension requires the following permissions:
 
 - **storage**: To save your preferences and whitelist locally
 - **activeTab**: To detect the current website and check whitelist status
-- **scripting**: To apply emoji modifications on web pages
 - **host_permissions (<all_urls>)**: To function on all websites you visit
 
 ## Third-Party Services
