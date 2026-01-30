@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/ozturkoktay/i-dont-care-about-emojis/compare/v1.0.0...v1.1.0) (2026-01-30)
+
+
+### Features
+
+* add release configuration and update workflow paths ([986d684](https://github.com/ozturkoktay/i-dont-care-about-emojis/commit/986d684da930139bbd2c9481d7055a3947da3a59))
+* add workflow_dispatch trigger to release workflow ([5fd5791](https://github.com/ozturkoktay/i-dont-care-about-emojis/commit/5fd579185f6f8017b98a0f69e2e56afd94e503ed))
+
+
+### Bug Fixes
+
+* correct description formatting and remove unnecessary permission ([651cef1](https://github.com/ozturkoktay/i-dont-care-about-emojis/commit/651cef1436594b7941a3486d873a50b0993f06c2))
+* update action reference in release workflow ([1b661c4](https://github.com/ozturkoktay/i-dont-care-about-emojis/commit/1b661c451daf6746779ee2738576a239d189980f))
+
 ## [1.0.0] - 2026-01-28
 
 ### Added

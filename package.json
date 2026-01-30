@@ -1,6 +1,6 @@
 {
   "name": "i-dont-care-about-emojis",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Hide, grayscale, dim, or blur emojis across the web with a simple whitelist and per‑site control.",
   "type": "module",
   "scripts": {
